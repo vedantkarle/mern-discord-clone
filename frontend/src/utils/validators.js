@@ -9,8 +9,26 @@ export const validateLoginForm = ({ email, password }) => {
 		: null;
 };
 
+export const validateRegisterForm = ({ email, username, password }) => {
+	const isMailValid = validateMail(email);
+	const isPasswordValid = validatePassword(password);
+	const isUsernameValid = validateUsername(username);
+
+	return !isMailValid
+		? "Enter a valid email!"
+		: !isPasswordValid
+		? "Password must be at least 6 characters"
+		: !isUsernameValid
+		? "Username must be atleast 3 characters"
+		: null;
+};
+
 const validatePassword = password => {
 	return password.length > 6;
+};
+
+const validateUsername = username => {
+	return username.length > 3;
 };
 
 const validateMail = email => {

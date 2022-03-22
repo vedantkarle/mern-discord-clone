@@ -2,7 +2,9 @@ import { Typography } from "@mui/material";
 import MuiAlert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { userLogin } from "../actions/authActions";
 import AuthBox from "../components/AuthBox";
 import Btn from "../components/Btn";
 import Header from "../components/Header";
@@ -18,6 +20,11 @@ const Login = () => {
 	const [password, setPassword] = useState("");
 	const [open, setOpen] = useState(false);
 	const [error, setError] = useState(null);
+
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
+
+	const { loading, error: authError, user } = useSelector(state => state.auth);
 
 	const handleClick = () => {
 		setOpen(true);
@@ -46,6 +53,8 @@ const Login = () => {
 			handleClick();
 			return;
 		}
+
+		dispatch(userLogin({ email, password }, navigate));
 	};
 
 	return (
@@ -64,7 +73,12 @@ const Login = () => {
 					setValue={setPassword}
 					type='password'
 				/>
-				<Btn tye='submit' label='Login' onClick={handleLogin} />
+				<Btn
+					tye='submit'
+					label='Login'
+					onClick={handleLogin}
+					loading={loading}
+				/>
 			</form>
 			<Typography variant='p' sx={{ color: "gray", marginTop: "5px" }}>
 				Need an account?<Link to='/register'>Register</Link>
@@ -76,6 +90,15 @@ const Login = () => {
 				onClose={handleClose}>
 				<Alert onClose={handleClose} severity='error' sx={{ width: "100%" }}>
 					{error}
+				</Alert>
+			</Snackbar>
+			<Snackbar
+				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+				open={authError !== null}
+				autoHideDuration={2000}
+				onClose={handleClose}>
+				<Alert severity='error' sx={{ width: "100%" }}>
+					{authError}
 				</Alert>
 			</Snackbar>
 		</AuthBox>
