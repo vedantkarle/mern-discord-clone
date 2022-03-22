@@ -11,13 +11,13 @@ const BoxWrapper = styled("div")({
 	background: "#5865F2",
 });
 
-const AuthBox = ({ children }) => {
+const AuthBox = ({ children, height }) => {
 	return (
 		<BoxWrapper>
 			<Box
 				sx={{
 					width: 500,
-					height: 400,
+					height: height,
 					bgcolor: "#36393f",
 					borderRadius: "5px",
 					boxShadow: "0 2px 10px 0 rgb(0 0 0 / 20%)",
