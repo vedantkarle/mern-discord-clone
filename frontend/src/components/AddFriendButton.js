@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import AddFriendDialog from "./AddFriendDialog";
 import Btn from "./Btn";
 
 const additionalStyles = {
@@ -10,7 +11,18 @@ const additionalStyles = {
 };
 
 const AddFriendButton = () => {
-	return <Btn additionalStyles={additionalStyles} label='AddFriend' />;
+	const [isOpen, setIsOpen] = useState(false);
+
+	return (
+		<>
+			<Btn
+				onClick={() => setIsOpen(true)}
+				additionalStyles={additionalStyles}
+				label='AddFriend'
+			/>
+			<AddFriendDialog isOpen={isOpen} onClose={() => setIsOpen(false)} />
+		</>
+	);
 };
 
 export default AddFriendButton;
