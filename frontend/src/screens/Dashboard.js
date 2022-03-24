@@ -1,9 +1,11 @@
 import { styled } from "@mui/system";
-import React from "react";
+import decode from "jwt-decode";
+import React, { useEffect } from "react";
 import AppBar from "../components/AppBar";
 import FriendsSidebar from "../components/FriendsSidebar";
 import Messenger from "../components/Messenger";
 import Sidebar from "../components/Sidebar";
+import { logout } from "../utils/auth";
 
 const Wrapper = styled("div")({
 	width: "100%",
@@ -12,6 +14,20 @@ const Wrapper = styled("div")({
 });
 
 const Dashboard = () => {
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem("user"));
+		if (!user) {
+			return (window.location.pathname = "/login");
+		}
+		const token = user?.token;
+		if (user && token) {
+			const decodedToken = decode(token);
+			if (decodedToken.exp * 1000 < new Date().getTime()) {
+				logout();
+			}
+		}
+	}, []);
+
 	return (
 		<Wrapper>
 			<Sidebar />
