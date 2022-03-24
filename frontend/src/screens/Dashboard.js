@@ -5,6 +5,7 @@ import AppBar from "../components/AppBar";
 import FriendsSidebar from "../components/FriendsSidebar";
 import Messenger from "../components/Messenger";
 import Sidebar from "../components/Sidebar";
+import { connectWithSocketServer } from "../socket/socketConnection";
 import { logout } from "../utils/auth";
 
 const Wrapper = styled("div")({
@@ -25,6 +26,13 @@ const Dashboard = () => {
 			if (decodedToken.exp * 1000 < new Date().getTime()) {
 				logout();
 			}
+		}
+	}, []);
+
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem("user"));
+		if (user) {
+			connectWithSocketServer(user);
 		}
 	}, []);
 
