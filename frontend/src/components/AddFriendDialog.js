@@ -1,21 +1,25 @@
-import { Typography } from "@mui/material";
+import { Alert, Snackbar, Typography } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { sendInvitation } from "../actions/friendsActions";
 import Btn from "./Btn";
 import Input from "./Input";
 
-const AddFriendDialog = ({
-	isOpen,
-	onClose,
-	sendFriendInvitation = () => {},
-}) => {
+const AddFriendDialog = ({ isOpen, onClose }) => {
 	const [email, setEmail] = useState("");
 
-	const handleSendInvitation = e => {};
+	const dispatch = useDispatch();
+
+	const { error: friendsError } = useSelector(state => state.friends);
+
+	const handleSendInvitation = () => {
+		dispatch(sendInvitation({ email }, onClose));
+	};
 
 	const handleCloseDialog = () => {
 		onClose();
@@ -48,6 +52,14 @@ const AddFriendDialog = ({
 					/>
 				</DialogActions>
 			</Dialog>
+			<Snackbar
+				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+				open={friendsError !== null}
+				autoHideDuration={2000}>
+				<Alert severity='error' sx={{ width: "100%" }}>
+					{friendsError}
+				</Alert>
+			</Snackbar>
 		</div>
 	);
 };

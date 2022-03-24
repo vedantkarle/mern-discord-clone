@@ -2,9 +2,11 @@ import { applyMiddleware, combineReducers, createStore } from "redux";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk";
 import authReducer from "./reducers/authReducer";
+import friendsReducer from "./reducers/friendsReducer";
 
 const reducer = combineReducers({
 	auth: authReducer,
+	friends: friendsReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("user")

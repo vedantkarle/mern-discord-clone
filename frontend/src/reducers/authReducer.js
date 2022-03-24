@@ -31,7 +31,7 @@ const reducer = (state = initState, action) => {
 				loading: false,
 				error: action.payload,
 			};
-		case "RESET_ERROR":
+		case "RESET_AUTH_ERROR":
 			return {
 				...state,
 				error: null,

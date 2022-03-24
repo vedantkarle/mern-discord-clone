@@ -12,7 +12,7 @@ export const userLogin = (userDetails, navigate) => async dispatch => {
 
 	if (response.error) {
 		dispatch({ type: USER_AUTH_FAILURE, payload: response.message });
-		setTimeout(() => dispatch({ type: "RESET_ERROR" }), 2000);
+		setTimeout(() => dispatch({ type: "RESET_AUTH_ERROR" }), 2000);
 	} else {
 		const { user } = response?.data;
 		localStorage.setItem("user", JSON.stringify(user));
@@ -29,7 +29,7 @@ export const userRegister = (userDetails, navigate) => async dispatch => {
 
 	if (response.error) {
 		dispatch({ type: USER_AUTH_FAILURE, payload: response.message });
-		setTimeout(() => dispatch({ type: "RESET_ERROR" }), 2000);
+		setTimeout(() => dispatch({ type: "RESET_AUTH_ERROR" }), 2000);
 	} else {
 		const { user } = response?.data;
 		localStorage.setItem("user", JSON.stringify(user));
