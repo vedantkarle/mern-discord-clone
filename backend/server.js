@@ -12,6 +12,7 @@ app.use([cors(), express.json()]);
 //Routes
 
 app.use("/api/auth", require("./routes/auth.routes"));
+app.use("/api/friends", require("./routes/friends.routes"));
 
 const PORT = process.env.PORT || 5000;
 

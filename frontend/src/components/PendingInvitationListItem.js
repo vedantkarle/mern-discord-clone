@@ -1,22 +1,26 @@
-import { Box, Tooltip, Typography } from "@mui/material";
+import { Alert, Box, Snackbar, Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import {
+	acceptFriendInvitation,
+	rejectFriendInvitation,
+} from "../actions/friendsActions";
 import Avatar from "./Avatar";
 import InvitationDecisionButton from "./InvitationDecisionButton";
 
-const PendingInvitationListItem = ({
-	sender: { _id, username, email },
-	acceptInvitation = () => {},
-	rejectInvitation = () => {},
-}) => {
+const PendingInvitationListItem = ({ id, sender: { username, email } }) => {
 	const [buttonsDisabled, setButtonsDisabled] = useState(false);
+	const [success, setSuccess] = useState(null);
+
+	const dispatch = useDispatch();
 
 	const handleAccceptInvitation = () => {
-		acceptInvitation({ _id });
+		dispatch(acceptFriendInvitation({ id }, setSuccess));
 		setButtonsDisabled(true);
 	};
 
 	const handleRejectInvitation = () => {
-		rejectInvitation({ _id });
+		dispatch(rejectFriendInvitation({ id }, setSuccess));
 		setButtonsDisabled(true);
 	};
 
@@ -49,6 +53,14 @@ const PendingInvitationListItem = ({
 						rejectInvitation={handleRejectInvitation}
 					/>
 				</Box>
+				<Snackbar
+					anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+					open={success !== null}
+					autoHideDuration={2000}>
+					<Alert severity='success' sx={{ width: "100%" }}>
+						{success}
+					</Alert>
+				</Snackbar>
 			</div>
 		</Tooltip>
 	);

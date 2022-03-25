@@ -1,5 +1,13 @@
 const users = [];
 
+let io = null;
+
+const setSocketServerInstance = ioInstance => {
+	io = ioInstance;
+};
+
+const getSocketServerInstance = () => io;
+
 const addUser = ({ socketId, userId }) => {
 	const user = users.find(user => user.userId === userId);
 
@@ -24,7 +32,21 @@ const removeUser = socketId => {
 	return;
 };
 
+const getActiveConnections = userId => {
+	const activeConnections = [];
+	users.forEach(user => {
+		if (user.userId === userId) {
+			activeConnections.push(user.socketId);
+		}
+	});
+
+	return activeConnections;
+};
+
 module.exports = {
 	addUser,
 	removeUser,
+	getActiveConnections,
+	getSocketServerInstance,
+	setSocketServerInstance,
 };

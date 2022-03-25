@@ -12,18 +12,19 @@ import Input from "./Input";
 
 const AddFriendDialog = ({ isOpen, onClose }) => {
 	const [email, setEmail] = useState("");
+	const [success, setSuccess] = useState(false);
 
 	const dispatch = useDispatch();
 
 	const { error: friendsError } = useSelector(state => state.friends);
 
-	const handleSendInvitation = () => {
-		dispatch(sendInvitation({ email }, onClose));
-	};
-
 	const handleCloseDialog = () => {
 		onClose();
 		setEmail("");
+	};
+
+	const handleSendInvitation = () => {
+		dispatch(sendInvitation({ email }, handleCloseDialog, setSuccess));
 	};
 
 	return (
@@ -58,6 +59,14 @@ const AddFriendDialog = ({ isOpen, onClose }) => {
 				autoHideDuration={2000}>
 				<Alert severity='error' sx={{ width: "100%" }}>
 					{friendsError}
+				</Alert>
+			</Snackbar>
+			<Snackbar
+				anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
+				open={success}
+				autoHideDuration={2000}>
+				<Alert severity='success' sx={{ width: "100%" }}>
+					Invitation was successfully sent
 				</Alert>
 			</Snackbar>
 		</div>

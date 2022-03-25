@@ -17,9 +17,13 @@ exports.register = async (req, res) => {
 			password,
 		});
 
-		const token = jwt.sign({ userId: newUser._id }, process.env.JWT_SECRET, {
-			expiresIn: "1h",
-		});
+		const token = jwt.sign(
+			{ userId: newUser._id, email: newUser.email },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: "1h",
+			},
+		);
 
 		res.status(200).json({
 			user: {
@@ -50,9 +54,13 @@ exports.login = async (req, res) => {
 			return res.status(401).send("Invalid Credentials");
 		}
 
-		const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-			expiresIn: "1h",
-		});
+		const token = jwt.sign(
+			{ userId: user._id, email: user.email },
+			process.env.JWT_SECRET,
+			{
+				expiresIn: "1h",
+			},
+		);
 
 		res.status(200).json({
 			user: {

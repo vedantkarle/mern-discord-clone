@@ -11,6 +11,22 @@ const FRIENDS_API = axios.create({
 	timeout: 60000,
 });
 
+FRIENDS_API.interceptors.request.use(
+	config => {
+		const user = JSON.parse(localStorage.getItem("user"));
+
+		if (user) {
+			const token = user?.token;
+			config.headers.Authorization = token;
+		}
+
+		return config;
+	},
+	err => {
+		return Promise.reject(err);
+	},
+);
+
 export const login = async data => {
 	try {
 		return await AUTH_API.post("/login", data);
@@ -35,7 +51,31 @@ export const register = async data => {
 
 export const sendInvitation = async data => {
 	try {
-		return await FRIENDS_API.post("/send-invitation", data);
+		return await FRIENDS_API.post("/invite", data);
+	} catch (error) {
+		checkResponse(error);
+		return {
+			error: true,
+			message: error?.response?.data || error?.message,
+		};
+	}
+};
+
+export const acceptInvitation = async data => {
+	try {
+		return await FRIENDS_API.post("/invitation/accept", data);
+	} catch (error) {
+		checkResponse(error);
+		return {
+			error: true,
+			message: error?.response?.data || error?.message,
+		};
+	}
+};
+
+export const rejectInvitation = async data => {
+	try {
+		return await FRIENDS_API.post("/invitation/reject", data);
 	} catch (error) {
 		checkResponse(error);
 		return {
