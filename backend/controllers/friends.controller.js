@@ -2,6 +2,7 @@ const User = require("../models/User");
 const FriendInvitation = require("../models/FriendInvitation");
 const {
 	updateFriendsPendingInvitations,
+	updateFriends,
 } = require("../socketHandlers/updates/friends");
 
 exports.friendInvitation = async (req, res) => {
@@ -75,6 +76,8 @@ exports.acceptInvitation = async (req, res) => {
 		await FriendInvitation.findByIdAndDelete(id);
 
 		updateFriendsPendingInvitations(receiverId.toString());
+
+		updateFriends(receiverId.toString());
 
 		res.status(200).send("Invitation accepted");
 	} catch (error) {

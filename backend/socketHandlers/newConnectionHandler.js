@@ -1,6 +1,7 @@
 const { addUser } = require("../serverStore");
 const {
 	updateFriendsPendingInvitations,
+	updateFriends,
 } = require("../socketHandlers/updates/friends");
 
 const newConnectionHandler = async (socket, io) => {
@@ -12,6 +13,8 @@ const newConnectionHandler = async (socket, io) => {
 	});
 
 	updateFriendsPendingInvitations(user);
+
+	updateFriends(user);
 };
 
 module.exports = newConnectionHandler;
