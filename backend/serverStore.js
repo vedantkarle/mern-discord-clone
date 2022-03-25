@@ -43,10 +43,18 @@ const getActiveConnections = userId => {
 	return activeConnections;
 };
 
+const getOnlineUsers = () => {
+	const onlineUsers = [];
+	users.forEach(user => onlineUsers.push(user));
+
+	return onlineUsers;
+};
+
 module.exports = {
 	addUser,
 	removeUser,
 	getActiveConnections,
 	getSocketServerInstance,
 	setSocketServerInstance,
+	getOnlineUsers,
 };

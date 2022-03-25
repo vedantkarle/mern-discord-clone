@@ -1,9 +1,14 @@
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
+import { useSelector } from "react-redux";
 import Avatar from "./Avatar";
 
-const FriendsListItem = ({ friend: { id, username, isOnline } }) => {
+const FriendsListItem = ({ friend: { id, username } }) => {
+	const { onlineUsers } = useSelector(state => state.friends);
+
+	const isOnline = onlineUsers.find(user => user.userId === id);
+
 	return (
 		<Button
 			style={{

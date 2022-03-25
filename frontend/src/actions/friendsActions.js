@@ -4,6 +4,7 @@ import {
 	SET_FRIENDS_FAILURE,
 	SET_FRIENDS_REQUEST,
 	SET_FRIENDS_SUCCESS,
+	SET_ONLINE_USERS,
 	SET_PENDING_INVITATIONS,
 } from "../constants/friendsConstants";
 
@@ -55,4 +56,8 @@ export const rejectFriendInvitation = (data, setSuccess) => async dispatch => {
 
 export const setFriends = friends => dispatch => {
 	dispatch({ type: SET_FRIENDS, payload: friends });
+};
+
+export const setOnlineUsers = users => dispatch => {
+	dispatch({ type: SET_ONLINE_USERS, payload: users });
 };

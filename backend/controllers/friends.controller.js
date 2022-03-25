@@ -64,14 +64,9 @@ exports.acceptInvitation = async (req, res) => {
 
 		const { senderId, receiverId } = invitation;
 
-		const sender = await User.findById(senderId);
-		sender.friends.unshift(receiverId);
+		await User.findByIdAndUpdate(senderId, { $push: { friends: receiverId } });
 
-		const receiver = await User.findById(receiverId);
-		receiver.friends.unshift(senderId);
-
-		await sender.save();
-		await receiver.save();
+		await User.findByIdAndUpdate(receiverId, { $push: { friends: senderId } });
 
 		await FriendInvitation.findByIdAndDelete(id);
 
