@@ -2,8 +2,8 @@ import { styled } from "@mui/system";
 import React from "react";
 
 const AvatarPreview = styled("div")({
-	height: "42px",
-	width: "42px",
+	height: "40px",
+	width: "40px",
 	backgroundColor: "#5865f2",
 	borderRadius: "42px",
 	display: "flex",
