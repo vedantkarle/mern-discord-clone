@@ -26,10 +26,6 @@ const removeUser = socketId => {
 	const indexOf = users.map(user => user.socketId).indexOf(socketId);
 
 	users.splice(indexOf, 1);
-
-	// console.log(users);
-
-	return;
 };
 
 const getActiveConnections = userId => {
