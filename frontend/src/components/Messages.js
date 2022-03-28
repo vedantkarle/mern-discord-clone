@@ -1,6 +1,7 @@
 import { styled } from "@mui/system";
 import React from "react";
 import { useSelector } from "react-redux";
+import DateSeparator from "./DateSeparator";
 import Message from "./Message";
 import MessagesHeader from "./MessagesHeader";
 
@@ -12,40 +13,16 @@ const MainContainer = styled("div")({
 	alignItems: "center",
 });
 
-const DUMMY_MESSAGES = [
-	{
-		id: 1,
-		content: "Hello",
-		sameAuthor: false,
-		author: { username: "janedoe" },
-		date: "22/01/2022",
-		sameDay: false,
-	},
-	{
-		id: 2,
-		content: "Hello again!",
-		sameAuthor: false,
-		author: { username: "vedantk" },
-		date: "22/01/2022",
-		sameDay: true,
-	},
-	{
-		id: 3,
-		content: "Hello",
-		sameAuthor: false,
-		author: { username: "janedoe" },
-		date: "23/01/2022",
-		sameDay: false,
-	},
-	{
-		id: 4,
-		content: "Hello",
-		sameAuthor: true,
-		author: { username: "janedoe" },
-		date: "23/01/2022",
-		sameDay: true,
-	},
-];
+const convertDateToHumanReadable = (date, format) => {
+	const map = {
+		mm: date.getMonth() + 1,
+		dd: date.getDate(),
+		yy: date.getFullYear().toString().slice(-2),
+		yyyy: date.getFullYear(),
+	};
+
+	return format.replace(/mm|dd|yy|yyy/gi, matched => map[matched]);
+};
 
 const Messages = () => {
 	const { chosenChatDetails, messages } = useSelector(state => state.chat);
@@ -53,16 +30,41 @@ const Messages = () => {
 	return (
 		<MainContainer>
 			<MessagesHeader name={chosenChatDetails?.name} />
-			{DUMMY_MESSAGES.map((message, index) => (
-				<Message
-					key={index}
-					content={message.content}
-					username={message.author.username}
-					sameAuthor={message.sameAuthor}
-					date={message.date}
-					sameDay={message.sameDay}
-				/>
-			))}
+			{messages?.map((message, index) => {
+				const sameAuthor =
+					index > 0 && message.author._id === messages[index - 1]?.author._id;
+
+				const sameDay =
+					index > 0 &&
+					convertDateToHumanReadable(new Date(message.date), "dd/mm/yy") ===
+						convertDateToHumanReadable(
+							new Date(messages[index - 1]?.date),
+							"dd/mm/yy",
+						);
+
+				return (
+					<div key={index} style={{ width: "97%" }}>
+						{(!sameDay || index === 0) && (
+							<DateSeparator
+								date={convertDateToHumanReadable(
+									new Date(message?.date),
+									"dd/mm/yy",
+								)}
+							/>
+						)}
+						<Message
+							content={message.content}
+							username={message.author.username}
+							sameAuthor={sameAuthor}
+							date={convertDateToHumanReadable(
+								new Date(message?.date),
+								"dd/mm/yy",
+							)}
+							sameDay={sameDay}
+						/>
+					</div>
+				);
+			})}
 		</MainContainer>
 	);
 };
