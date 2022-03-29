@@ -4,11 +4,13 @@ import thunk from "redux-thunk";
 import authReducer from "./reducers/authReducer";
 import chatReducer from "./reducers/chatReducer";
 import friendsReducer from "./reducers/friendsReducer";
+import roomReducer from "./reducers/roomReducer";
 
 const reducer = combineReducers({
 	auth: authReducer,
 	friends: friendsReducer,
 	chat: chatReducer,
+	room: roomReducer,
 });
 
 const userInfoFromStorage = localStorage.getItem("user")
