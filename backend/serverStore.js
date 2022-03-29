@@ -86,6 +86,22 @@ const joinActiveRoom = (roomId, newParticipant) => {
 	activeRooms.push(updatedRoom);
 };
 
+const leaveActiveRoom = (roomId, socketId) => {
+	const room = activeRooms.find(room => room.roomId === roomId);
+	activeRooms = activeRooms.filter(room => room.roomId !== roomId);
+
+	const updatedRoom = {
+		...room,
+		participants: room.participants.filter(
+			participant => participant.socketId !== socketId,
+		),
+	};
+
+	if (updatedRoom.participants.length > 0) {
+		activeRooms.push(updatedRoom);
+	}
+};
+
 module.exports = {
 	addUser,
 	removeUser,
@@ -97,4 +113,5 @@ module.exports = {
 	getActiveRooms,
 	getActiveRoom,
 	joinActiveRoom,
+	leaveActiveRoom,
 };

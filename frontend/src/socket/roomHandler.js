@@ -1,6 +1,6 @@
 import { setOpenRoom, setRoomDetails } from "../actions/roomActions";
 import store from "../store";
-import { createRoom, joinUserRoom } from "./socketConnection";
+import { createRoom, joinUserRoom, leaveUserRoom } from "./socketConnection";
 
 export const createNewRoom = () => {
 	store.dispatch(setOpenRoom(true, true));
@@ -15,6 +15,18 @@ export const newRoomCreated = data => {
 export const joinRoom = roomId => {
 	joinUserRoom({ roomId });
 
-	store.dispatch(setRoomDetails(roomId));
+	const room = store
+		.getState()
+		.room.activeRooms.find(room => room.roomId === roomId);
+
+	store.dispatch(setRoomDetails(room));
 	store.dispatch(setOpenRoom(false, true));
+};
+
+export const leaveRoom = () => {
+	const roomId = store.getState().room.roomDetails.roomId;
+	leaveUserRoom({ roomId });
+
+	store.dispatch(setRoomDetails(null));
+	store.dispatch(setOpenRoom(false, false));
 };
