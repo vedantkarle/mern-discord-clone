@@ -10,7 +10,11 @@ export const setOpenRoom =
 		dispatch({ type: OPEN_ROOM, payload: { isUserRoomCreator, isUserInRoom } });
 	};
 
-export const setRoomDetails = roomDetails => dispatch => {
+export const setRoomDetails = roomId => (dispatch, getState) => {
+	const roomDetails = getState().room.activeRooms.find(
+		room => room.roomId === roomId,
+	);
+
 	dispatch({ type: SET_ROOM_DETAILS, payload: { roomDetails } });
 };
 

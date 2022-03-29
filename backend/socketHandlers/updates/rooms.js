@@ -1,6 +1,4 @@
-const User = require("../../models/User");
 const {
-	getActiveConnections,
 	getSocketServerInstance,
 	getActiveRooms,
 } = require("../../serverStore");

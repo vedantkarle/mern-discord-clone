@@ -1,7 +1,7 @@
 const { v4: uuidv4 } = require("uuid");
 
 const users = [];
-const activeRooms = [];
+let activeRooms = [];
 
 let io = null;
 
@@ -70,6 +70,22 @@ const getActiveRooms = () => {
 	return activeRooms;
 };
 
+const getActiveRoom = roomId => {
+	return activeRooms.find(room => room.roomId === roomId);
+};
+
+const joinActiveRoom = (roomId, newParticipant) => {
+	const room = activeRooms.find(room => room.roomId === roomId);
+	activeRooms = activeRooms.filter(room => room.roomId !== roomId);
+
+	const updatedRoom = {
+		...room,
+		participants: [...room.participants, newParticipant],
+	};
+
+	activeRooms.push(updatedRoom);
+};
+
 module.exports = {
 	addUser,
 	removeUser,
@@ -79,4 +95,6 @@ module.exports = {
 	getOnlineUsers,
 	addNewActiveRoom,
 	getActiveRooms,
+	getActiveRoom,
+	joinActiveRoom,
 };
