@@ -8,9 +8,7 @@ const updateRooms = (toSpecificSocketId = null) => {
 	const activeRooms = getActiveRooms();
 
 	if (toSpecificSocketId) {
-		io.to(toSpecificSocketId).emit("active-rooms", {
-			activeRooms,
-		});
+		io.to(toSpecificSocketId).emit("active-rooms", activeRooms);
 	} else {
 		io.emit("active-rooms", activeRooms);
 	}
