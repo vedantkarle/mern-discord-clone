@@ -1,5 +1,7 @@
 import { styled } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
+import Video from "./Video";
 
 const MainContainer = styled("div")({
 	height: "85%",
@@ -9,7 +11,13 @@ const MainContainer = styled("div")({
 });
 
 const VideosContainer = () => {
-	return <MainContainer>VideosContainer</MainContainer>;
+	const { localStream } = useSelector(state => state.room);
+
+	return (
+		<MainContainer>
+			<Video stream={localStream} isLocalStream />
+		</MainContainer>
+	);
 };
 
 export default VideosContainer;

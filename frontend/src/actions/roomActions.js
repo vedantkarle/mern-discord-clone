@@ -1,6 +1,7 @@
 import {
 	OPEN_ROOM,
 	SET_ACTIVE_ROOMS,
+	SET_LOCAL_STREAM,
 	SET_ROOM_DETAILS,
 } from "../constants/roomConstants";
 
@@ -34,4 +35,8 @@ export const setActiveRooms = activeRooms => (dispatch, getState) => {
 	});
 
 	dispatch({ type: SET_ACTIVE_ROOMS, payload: { rooms } });
+};
+
+export const setLocalStream = stream => dispatch => {
+	dispatch({ type: SET_LOCAL_STREAM, payload: { localStream: stream } });
 };

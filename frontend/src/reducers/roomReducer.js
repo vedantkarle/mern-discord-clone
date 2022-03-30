@@ -1,6 +1,7 @@
 import {
 	OPEN_ROOM,
 	SET_ACTIVE_ROOMS,
+	SET_LOCAL_STREAM,
 	SET_ROOM_DETAILS,
 } from "../constants/roomConstants";
 
@@ -33,6 +34,11 @@ const reducer = (state = initState, action) => {
 			return {
 				...state,
 				activeRooms: action.payload.rooms,
+			};
+		case SET_LOCAL_STREAM:
+			return {
+				...state,
+				localStream: action.payload.localStream,
 			};
 		default:
 			return state;

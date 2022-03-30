@@ -1,10 +1,15 @@
 import { setOpenRoom, setRoomDetails } from "../actions/roomActions";
 import store from "../store";
 import { createRoom, joinUserRoom, leaveUserRoom } from "./socketConnection";
+import { getLocalStreamPreview } from "./webRTC";
 
 export const createNewRoom = () => {
-	store.dispatch(setOpenRoom(true, true));
-	createRoom();
+	const successCallbackFunc = () => {
+		store.dispatch(setOpenRoom(true, true));
+		createRoom();
+	};
+
+	getLocalStreamPreview(false, successCallbackFunc);
 };
 
 export const newRoomCreated = data => {
@@ -13,14 +18,17 @@ export const newRoomCreated = data => {
 };
 
 export const joinRoom = roomId => {
-	joinUserRoom({ roomId });
-
 	const room = store
 		.getState()
 		.room.activeRooms.find(room => room.roomId === roomId);
 
-	store.dispatch(setRoomDetails(room));
-	store.dispatch(setOpenRoom(false, true));
+	const successCallbackFunc = () => {
+		store.dispatch(setRoomDetails(room));
+		store.dispatch(setOpenRoom(false, true));
+		joinUserRoom({ roomId });
+	};
+
+	getLocalStreamPreview(false, successCallbackFunc);
 };
 
 export const leaveRoom = () => {
