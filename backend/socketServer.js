@@ -8,7 +8,13 @@ const disconnectHanlder = require("./socketHandlers/disconnectHandler");
 const leaveRoomHandler = require("./socketHandlers/leaveRoomHandler");
 const newConnectionHandler = require("./socketHandlers/newConnectionHandler");
 const roomCreateHanlder = require("./socketHandlers/roomCreateHandler");
+const {
+	roomInitializeConnectionHandler,
+} = require("./socketHandlers/roomInitializeConnectionHandler");
 const roomJoinHandler = require("./socketHandlers/roomJoinHandler");
+const {
+	roomSignalingDataHandler,
+} = require("./socketHandlers/roomSignalingDataHandler");
 
 const registerSocketServer = server => {
 	const io = require("socket.io")(server, {
@@ -53,6 +59,14 @@ const registerSocketServer = server => {
 
 		socket.on("room-leave", data => {
 			leaveRoomHandler(socket, data);
+		});
+
+		socket.on("conn-init", data => {
+			roomInitializeConnectionHandler(socket, data);
+		});
+
+		socket.on("conn-signal", data => {
+			roomSignalingDataHandler(socket, data);
 		});
 
 		socket.on("disconnect", () => {

@@ -8,7 +8,7 @@ import { setActiveRooms } from "../actions/roomActions";
 import store from "../store";
 import { updateDirectChatHistoryIfActive } from "../utils/chat";
 import { newRoomCreated } from "./roomHandler";
-import { prepareNewPeerConnection } from "./webRTC";
+import { handleSignalingData, prepareNewPeerConnection } from "./webRTC";
 
 let socket = null;
 
@@ -55,6 +55,15 @@ export const connectWithSocketServer = user => {
 		prepareNewPeerConnection(connUserSocketId, false);
 		socket.emit("conn-init", { connUserSocketId });
 	});
+
+	socket.on("conn-init", data => {
+		const { connUserSocketId } = data;
+		prepareNewPeerConnection(connUserSocketId, true);
+	});
+
+	socket.on("conn-signal", data => {
+		handleSignalingData(data);
+	});
 };
 
 export const sendDirectMessage = data => {
@@ -77,4 +86,6 @@ export const leaveUserRoom = data => {
 	socket.emit("room-leave", data);
 };
 
-export const signalPeerData = () => {};
+export const signalPeerData = data => {
+	socket.emit("conn-signal", data);
+};

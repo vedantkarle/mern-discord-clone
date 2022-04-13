@@ -1,6 +1,8 @@
 import Peer from "simple-peer";
 import { setLocalStream } from "../actions/roomActions";
+import { SET_REMOTE_STREAMS } from "../constants/roomConstants";
 import store from "../store";
+import { signalPeerData } from "./socketConnection";
 
 const onlyAudioConstraints = {
 	audio: true,
@@ -66,8 +68,29 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
 			connUserSocketId,
 		};
 
-		// signalPeerData(signalData)
+		signalPeerData(signalData);
 	});
 
-	peers[connUserSocketId].on("stream", remoteStream => {});
+	peers[connUserSocketId].on("stream", remoteStream => {
+		remoteStream.connUserSocketId = connUserSocketId;
+		addNewRemoteStream(remoteStream);
+	});
+};
+
+export const handleSignalingData = signalingData => {
+	const { connUserSocketId, signal } = signalingData;
+
+	if (peers[connUserSocketId]) {
+		peers[connUserSocketId].signal(signal);
+	}
+};
+
+const addNewRemoteStream = remoteStream => {
+	const remoteStreams = store.getState().room?.remoteStreams;
+	const newRemoteStreams = [...remoteStreams, remoteStream];
+
+	store.dispatch({
+		type: SET_REMOTE_STREAMS,
+		payload: { remoteStreams: newRemoteStreams },
+	});
 };

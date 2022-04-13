@@ -3,6 +3,7 @@ import {
 	SET_ACTIVE_ROOMS,
 	SET_AUDIO_ONLY,
 	SET_LOCAL_STREAM,
+	SET_REMOTE_STREAMS,
 	SET_ROOM_DETAILS,
 } from "../constants/roomConstants";
 
@@ -40,6 +41,11 @@ const reducer = (state = initState, action) => {
 			return {
 				...state,
 				localStream: action.payload.localStream,
+			};
+		case SET_REMOTE_STREAMS:
+			return {
+				...state,
+				remoteStreams: action.payload.remoteStreams,
 			};
 		case SET_AUDIO_ONLY:
 			return {
