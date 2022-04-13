@@ -13,6 +13,8 @@ const MainContainer = styled("div")({
 const VideosContainer = () => {
 	const { localStream } = useSelector(state => state.room);
 
+	console.log(localStream);
+
 	return (
 		<MainContainer>
 			<Video stream={localStream} isLocalStream />

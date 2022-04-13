@@ -1,4 +1,8 @@
-const { getActiveRoom, joinActiveRoom } = require("../serverStore");
+const {
+	getActiveRoom,
+	joinActiveRoom,
+	getSocketServerInstance,
+} = require("../serverStore");
 const updateRooms = require("./updates/rooms");
 
 const roomJoinHandler = (socket, data) => {
@@ -9,7 +13,19 @@ const roomJoinHandler = (socket, data) => {
 		socketId: socket.id,
 	};
 
+	const io = getSocketServerInstance();
+
+	const roomDetails = getActiveRoom(roomId);
+
 	joinActiveRoom(roomId, participantDetails);
+
+	roomDetails.participants.forEach(participant => {
+		if (participant.socketId !== participantDetails.socketId) {
+			io.to(participant.socketId).emit("conn-prepare", {
+				connUserSocketId: participantDetails.socketId,
+			});
+		}
+	});
 
 	updateRooms();
 };
