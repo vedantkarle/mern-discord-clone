@@ -3,9 +3,10 @@ import {
 	setOpenRoom,
 	setRoomDetails,
 } from "../actions/roomActions";
+import { SET_REMOTE_STREAMS } from "../constants/roomConstants";
 import store from "../store";
 import { createRoom, joinUserRoom, leaveUserRoom } from "./socketConnection";
-import { getLocalStreamPreview } from "./webRTC";
+import { closeAllConnections, getLocalStreamPreview } from "./webRTC";
 
 export const createNewRoom = () => {
 	const successCallbackFunc = () => {
@@ -48,6 +49,13 @@ export const leaveRoom = () => {
 		localStream.getTracks().forEach(track => track.stop());
 		store.dispatch(setLocalStream(null));
 	}
+
+	store.dispatch({
+		type: SET_REMOTE_STREAMS,
+		payload: { remoteStreams: [] },
+	});
+
+	closeAllConnections();
 
 	leaveUserRoom({ roomId });
 	store.dispatch(setRoomDetails(null));

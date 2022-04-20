@@ -8,7 +8,11 @@ import { setActiveRooms } from "../actions/roomActions";
 import store from "../store";
 import { updateDirectChatHistoryIfActive } from "../utils/chat";
 import { newRoomCreated } from "./roomHandler";
-import { handleSignalingData, prepareNewPeerConnection } from "./webRTC";
+import {
+	handleParticipantLeftRoom,
+	handleSignalingData,
+	prepareNewPeerConnection,
+} from "./webRTC";
 
 let socket = null;
 
@@ -63,6 +67,10 @@ export const connectWithSocketServer = user => {
 
 	socket.on("conn-signal", data => {
 		handleSignalingData(data);
+	});
+
+	socket.on("room-participant-left", data => {
+		handleParticipantLeftRoom(data);
 	});
 };
 

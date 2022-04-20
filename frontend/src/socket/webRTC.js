@@ -94,3 +94,37 @@ const addNewRemoteStream = remoteStream => {
 		payload: { remoteStreams: newRemoteStreams },
 	});
 };
+
+//handling for user who is leaving the room
+
+export const closeAllConnections = () => {
+	Object.entries(peers).forEach(mappedObject => {
+		const connUserSocketId = mappedObject[0];
+		if (peers[connUserSocketId]) {
+			peers[connUserSocketId].destroy();
+			delete peers[connUserSocketId];
+		}
+	});
+};
+
+//handling for other users if a user has left the room
+
+export const handleParticipantLeftRoom = data => {
+	const { connUserSocketId } = data;
+
+	if (peers[connUserSocketId]) {
+		peers[connUserSocketId].destroy();
+		delete peers[connUserSocketId];
+	}
+
+	const remoteStreams = store.getState().room?.remoteStreams;
+
+	const newRemoteStreams = remoteStreams.filter(
+		stream => stream.connUserSocketId !== connUserSocketId,
+	);
+
+	store.dispatch({
+		type: SET_REMOTE_STREAMS,
+		payload: { remoteStreams: newRemoteStreams },
+	});
+};
