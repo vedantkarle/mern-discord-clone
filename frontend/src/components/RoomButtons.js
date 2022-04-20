@@ -1,5 +1,6 @@
 import { styled } from "@mui/system";
 import React from "react";
+import { useSelector } from "react-redux";
 import CameraButton from "./CameraButton";
 import CloseRoomButton from "./CloseRoomButton";
 import MicButton from "./MicButton";
@@ -17,11 +18,13 @@ const MainContainer = styled("div")({
 });
 
 const RoomButtons = () => {
+	const { localStream } = useSelector(state => state.room);
+
 	return (
 		<MainContainer>
 			<ScreenShareButton />
-			<MicButton />
-			<CameraButton />
+			<MicButton localStream={localStream} />
+			<CameraButton localStream={localStream} />
 			<CloseRoomButton />
 		</MainContainer>
 	);
