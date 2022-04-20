@@ -5,6 +5,7 @@ import {
 	SET_LOCAL_STREAM,
 	SET_REMOTE_STREAMS,
 	SET_ROOM_DETAILS,
+	SET_SCREEN_SHARE_STREAM,
 } from "../constants/roomConstants";
 
 const initState = {
@@ -51,6 +52,12 @@ const reducer = (state = initState, action) => {
 			return {
 				...state,
 				audioOnly: action.payload.audioOnly,
+			};
+		case SET_SCREEN_SHARE_STREAM:
+			return {
+				...state,
+				isScreenSharingActive: action.payload.isScreenSharingActive,
+				screenSharingStream: action.payload.stream || null,
 			};
 		default:
 			return state;
