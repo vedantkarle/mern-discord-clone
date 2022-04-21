@@ -3,7 +3,10 @@ import {
 	setOpenRoom,
 	setRoomDetails,
 } from "../actions/roomActions";
-import { SET_REMOTE_STREAMS } from "../constants/roomConstants";
+import {
+	SET_REMOTE_STREAMS,
+	SET_SCREEN_SHARE_STREAM,
+} from "../constants/roomConstants";
 import store from "../store";
 import { createRoom, joinUserRoom, leaveUserRoom } from "./socketConnection";
 import { closeAllConnections, getLocalStreamPreview } from "./webRTC";
@@ -48,6 +51,16 @@ export const leaveRoom = () => {
 	if (localStream) {
 		localStream.getTracks().forEach(track => track.stop());
 		store.dispatch(setLocalStream(null));
+	}
+
+	const screenSharingStream = store.getState().room.screenSharingStream;
+
+	if (screenSharingStream) {
+		screenSharingStream.getTracks().forEach(track => track.stop());
+		store.dispatch({
+			type: SET_SCREEN_SHARE_STREAM,
+			payload: { isScreenSharingActive: false, screenSharingStream: null },
+		});
 	}
 
 	store.dispatch({
