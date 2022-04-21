@@ -1,15 +1,19 @@
 import VideoCallIcon from "@mui/icons-material/VideoCall";
 import Button from "@mui/material/Button";
 import React from "react";
+import { useSelector } from "react-redux";
 import { createNewRoom } from "../socket/roomHandler";
 
 const CreateRoomButton = () => {
+	const { isUserInRoom } = useSelector(state => state.room);
+
 	const createRoomHandler = () => {
 		createNewRoom();
 	};
 
 	return (
 		<Button
+			disabled={isUserInRoom}
 			onClick={createRoomHandler}
 			style={{
 				width: "48px",

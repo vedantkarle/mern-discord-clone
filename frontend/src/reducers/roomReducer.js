@@ -2,6 +2,7 @@ import {
 	OPEN_ROOM,
 	SET_ACTIVE_ROOMS,
 	SET_AUDIO_ONLY,
+	SET_IS_USER_JOINED_AUDIO_ONLY,
 	SET_LOCAL_STREAM,
 	SET_REMOTE_STREAMS,
 	SET_ROOM_DETAILS,
@@ -18,6 +19,7 @@ const initState = {
 	audioOnly: false,
 	screenSharingStream: null,
 	isScreenSharingActive: false,
+	isUserJoinedWithOnlyAudio: false,
 };
 
 const reducer = (state = initState, action) => {
@@ -58,6 +60,11 @@ const reducer = (state = initState, action) => {
 				...state,
 				isScreenSharingActive: action.payload.isScreenSharingActive,
 				screenSharingStream: action.payload.stream || null,
+			};
+		case SET_IS_USER_JOINED_AUDIO_ONLY:
+			return {
+				...state,
+				isUserJoinedWithOnlyAudio: action.payload.isUserJoinedWithOnlyAudio,
 			};
 		default:
 			return state;

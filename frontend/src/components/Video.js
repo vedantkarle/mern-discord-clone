@@ -6,6 +6,7 @@ const MainContainer = styled("div")({
 	width: "50%",
 	backgroundColor: "black",
 	borderRadius: "8px",
+	position: "relative",
 });
 
 const VideoElement = styled("video")({
@@ -13,7 +14,17 @@ const VideoElement = styled("video")({
 	height: "100%",
 });
 
-const Video = ({ stream, isLocalStream }) => {
+const VideoName = styled("span")({
+	position: "absolute",
+	bottom: "0",
+	left: "0",
+	padding: "5px",
+	backgroundColor: "rgba(0, 0, 0, 0.5)",
+	color: "white",
+	fontWeight: "bold",
+});
+
+const Video = ({ stream, isLocalStream, username }) => {
 	const videoRef = useRef();
 
 	useEffect(() => {
@@ -32,6 +43,7 @@ const Video = ({ stream, isLocalStream }) => {
 				autoPlay
 				muted={isLocalStream ? true : false}
 			/>
+			<VideoName>{username}</VideoName>
 		</MainContainer>
 	);
 };

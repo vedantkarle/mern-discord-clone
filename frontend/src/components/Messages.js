@@ -1,5 +1,5 @@
 import { styled } from "@mui/system";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useSelector } from "react-redux";
 import DateSeparator from "./DateSeparator";
 import Message from "./Message";
@@ -24,8 +24,19 @@ const convertDateToHumanReadable = (date, format) => {
 	return format.replace(/mm|dd|yy|yyy/gi, matched => map[matched]);
 };
 
+const scrollDivToBottom = divRef => {
+	divRef.current !== null &&
+		divRef.current.scrollIntoView({ behaviour: "smooth" });
+};
+
 const Messages = () => {
 	const { chosenChatDetails, messages } = useSelector(state => state.chat);
+
+	const divRef = useRef();
+
+	useEffect(() => {
+		messages.length > 0 && scrollDivToBottom(divRef);
+	}, [messages]);
 
 	return (
 		<MainContainer>
@@ -53,6 +64,7 @@ const Messages = () => {
 							/>
 						)}
 						<Message
+							divRef={divRef}
 							content={message.content}
 							username={message.author.username}
 							sameAuthor={sameAuthor}

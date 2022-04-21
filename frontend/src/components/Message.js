@@ -31,17 +31,17 @@ const SameAuthorMessageText = styled("span")({
 	marginLeft: "70px",
 });
 
-const Message = ({ sameDay, sameAuthor, content, username, date }) => {
+const Message = ({ sameDay, sameAuthor, content, username, date, divRef }) => {
 	if (sameAuthor && sameDay) {
 		return (
-			<SameAuthorMessageContent>
+			<SameAuthorMessageContent ref={divRef}>
 				<SameAuthorMessageText>{content}</SameAuthorMessageText>
 			</SameAuthorMessageContent>
 		);
 	}
 
 	return (
-		<MainContainer>
+		<MainContainer ref={divRef}>
 			<AvatarContainer>
 				<Avatar username={username} />
 			</AvatarContainer>

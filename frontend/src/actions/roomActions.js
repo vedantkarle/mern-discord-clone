@@ -18,21 +18,34 @@ export const setRoomDetails = roomDetails => (dispatch, getState) => {
 
 export const setActiveRooms = activeRooms => (dispatch, getState) => {
 	const friends = getState().friends.friends;
+	const { _id: userId } = getState()?.auth?.user;
 
 	const rooms = [];
 
 	activeRooms.forEach(room => {
-		friends.forEach(friend => {
-			if (friend.id === room.roomCreator.userId) {
-				rooms.push({
-					...room,
-					roomCreator: {
-						...room?.roomCreator,
-						creatorUsername: friend.username,
-					},
-				});
-			}
-		});
+		const isRoomCreatedByMe = room.roomCreator.userId === userId;
+
+		if (isRoomCreatedByMe) {
+			rooms.push({
+				...room,
+				roomCreator: {
+					...room?.roomCreator,
+					creatorUsername: "Me",
+				},
+			});
+		} else {
+			friends.forEach(friend => {
+				if (friend.id === room.roomCreator.userId) {
+					rooms.push({
+						...room,
+						roomCreator: {
+							...room?.roomCreator,
+							creatorUsername: friend.username,
+						},
+					});
+				}
+			});
+		}
 	});
 
 	dispatch({ type: SET_ACTIVE_ROOMS, payload: { rooms } });

@@ -56,13 +56,13 @@ export const connectWithSocketServer = user => {
 
 	socket.on("conn-prepare", data => {
 		const { connUserSocketId } = data;
-		prepareNewPeerConnection(connUserSocketId, false);
+		prepareNewPeerConnection(connUserSocketId, user.username, false);
 		socket.emit("conn-init", { connUserSocketId });
 	});
 
 	socket.on("conn-init", data => {
 		const { connUserSocketId } = data;
-		prepareNewPeerConnection(connUserSocketId, true);
+		prepareNewPeerConnection(connUserSocketId, user.username, true);
 	});
 
 	socket.on("conn-signal", data => {

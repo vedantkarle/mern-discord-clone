@@ -47,7 +47,11 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
 
 let peers = {};
 
-export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
+export const prepareNewPeerConnection = (
+	connUserSocketId,
+	username,
+	isInitiator,
+) => {
 	const localStream = store.getState().room.localStream;
 
 	if (isInitiator) {
@@ -73,6 +77,7 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
 
 	peers[connUserSocketId].on("stream", remoteStream => {
 		remoteStream.connUserSocketId = connUserSocketId;
+		remoteStream.username = username;
 		addNewRemoteStream(remoteStream);
 	});
 };

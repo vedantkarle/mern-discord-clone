@@ -4,6 +4,7 @@ import {
 	setRoomDetails,
 } from "../actions/roomActions";
 import {
+	SET_IS_USER_JOINED_AUDIO_ONLY,
 	SET_REMOTE_STREAMS,
 	SET_SCREEN_SHARE_STREAM,
 } from "../constants/roomConstants";
@@ -13,7 +14,13 @@ import { closeAllConnections, getLocalStreamPreview } from "./webRTC";
 
 export const createNewRoom = () => {
 	const successCallbackFunc = () => {
+		const audioOnly = store.getState().room.audioOnly;
+
 		store.dispatch(setOpenRoom(true, true));
+		store.dispatch({
+			type: SET_IS_USER_JOINED_AUDIO_ONLY,
+			payload: { isUserJoinedWithOnlyAudio: audioOnly },
+		});
 		createRoom();
 	};
 
